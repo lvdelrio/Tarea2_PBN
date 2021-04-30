@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-
+//Yo puse esta linea dx
 char* concat(const char *s1, const char *s2){
     char *result = malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
     // in real code you would check for errors in malloc here
