@@ -43,6 +43,9 @@ int main(){
     printf("%d Datos\n", numerodedatos);
 
     
+    //char* line = malloc(255*sizeof(char*)); //ACUERDATE DEL FREE 
+
+    
     char line[255]; //Hay que declarar eso diferente por las decimas
     int contador = 0;
     char*** lineas = malloc(sizeof(char**));
@@ -57,18 +60,15 @@ int main(){
         
         if(decision==1){
             for(int c=0; c<10; c++){ //Tratar de recorrer 10 nombres
-                printf("numero de iteracion %d \n", c);
                 char** linea = malloc(3*sizeof(char*));
                 for (int i=0;i<5;i++){
                     linea[i]=malloc(100*sizeof(char));
                     }  
                 fgets(line,sizeof line,genres);
-                printf("%s",line);
-
-                char* token =strtok(line, ";");
-
-                //printf("Token : %s\n", token);
-                 
+                printf("DATO : %s",line);
+                
+                char* token = strtok(line, ";");
+                
                 while(token !=NULL){
                     char* palabra= malloc(100*sizeof(char));
                     strcpy(palabra,token);
@@ -81,11 +81,13 @@ int main(){
                 }
             
             free(linea);
+            printf("Dato c : %d \n ", c);
             }
         }
         
     }
     free(lineas[0]);
     free(lineas);
+    //free(line);
     return 0;
 }
