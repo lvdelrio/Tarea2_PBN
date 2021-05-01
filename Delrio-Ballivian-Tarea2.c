@@ -43,10 +43,10 @@ int main(){
     printf("%d Datos\n", numerodedatos);
 
     
-    //char* line = malloc(255*sizeof(char*)); //ACUERDATE DEL FREE 
+    char* line = malloc(255*sizeof(char)); //ACUERDATE DEL FREE 
 
     
-    char line[255]; //Hay que declarar eso diferente por las decimas
+    //char line[255]; //Hay que declarar eso diferente por las decimas
     int contador = 0;
     char*** lineas = malloc(sizeof(char**));
     lineas[0]=malloc(3*sizeof(char*));
@@ -64,7 +64,7 @@ int main(){
                 for (int i=0;i<5;i++){
                     linea[i]=malloc(100*sizeof(char));
                     }  
-                fgets(line,sizeof line,genres);
+                fgets(line,256,genres);
                 printf("DATO : %s",line);
                 
                 char* token = strtok(line, ";");
@@ -88,6 +88,6 @@ int main(){
     }
     free(lineas[0]);
     free(lineas);
-    //free(line);
+    free(line);
     return 0;
 }
