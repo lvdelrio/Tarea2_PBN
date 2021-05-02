@@ -53,6 +53,7 @@ int main(){
 
     
     char* line = malloc(255*sizeof(char)); //ACUERDATE DEL FREE 
+    char* line2 = malloc(255*sizeof(char)); 
 
     
     //char line[255]; //Hay que declarar eso diferente por las decimas
@@ -76,23 +77,31 @@ int main(){
                     } 
                  
                 fgets(line,256,genres);
+                fgets(line2,256,songs);
+
                 printf("DATO : %s",line);
                 
                 char* token = strtok(line, ";");
+                char* token2 = strtok(line2, ";");
                 
                 while(token !=NULL){
                     char* palabra= malloc(100*sizeof(char));
+                    char* palabra2= malloc(100*sizeof(char));
                     strcpy(palabra,token);
+                    strcpy(palabra2,token2);
                     //strcpy(linea[contador],palabra);
                     linea[contador]=palabra;
                     if(contador==0){
                         datos[c].genero=linea[contador];
+                        
                         }
                     if(contador==1){
                         datos[c].id=linea[contador];
+                        datos[c].popu=atoi(palabra2);
                         }
                     if(contador==2){
                         datos[c].artista=linea[contador];
+                        datos[c].major=palabra2;
                         }
                     printf("%s",linea[0]);
                     token = strtok(NULL,";");
