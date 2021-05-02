@@ -12,6 +12,27 @@ struct generos{
     
 };
 
+
+
+
+int string_compare(char str1[], char str2[])
+{
+    int ctr=0;
+    //printf("estoy en la super mega funcion : %s \n", str1);
+    //printf("%s final de linea \n",str2);
+    while(str1[ctr]==str2[ctr])
+    {   
+        //printf(" letras %c    %c\n",str1[ctr],str2[ctr]);
+        if(str1[ctr]=='\0'||str2[ctr]=='\0')
+            break;
+        ctr++;
+    }
+    if(str1[ctr]=='\0' && str2[ctr]=='\0')
+        return 0;
+    else
+        return -1;
+}
+
 int numero_lineas(FILE*file){ //Contador de Lineas del archivo
     char ch;
     int lineas = 0;
@@ -60,7 +81,7 @@ int main(int argc, char** argv){
         
         if(decision==1){
             
-            for(int c=0; c<4; c++){ //Tratar de recorrer 10 nombres
+            for(int c=0; c<numerodedatos; c++){ //Tratar de recorrer 10 nombres
                 char** linea = malloc(3*sizeof(char*));
                 char** linea2 = malloc(3*sizeof(char*));
                 for (int i=0;i<5;i++){ //Generos
@@ -72,10 +93,10 @@ int main(int argc, char** argv){
                  
                 fgets(line,256,genres); //generos.txt ---------------------------------------------
 
-                printf("DATO : %s \n",line);
+                //printf("DATO : %s \n",line);
                 
                 char* token = strtok(line, ";");
-                printf("token %s\n", token);
+                //printf("token %s\n", token);
 
                 while(token !=NULL){ //Palabra 1
                     char* palabra= malloc(100*sizeof(char));
@@ -110,34 +131,36 @@ int main(int argc, char** argv){
                     lineas[cont_lines]=malloc(3*sizeof(char*));
                     }
                 lineas[cont_lines]=linea;
-                printf("%s %s %s",lineas[0][0],lineas[0][1],lineas[0][2]);
+                //printf("%s %s %s",lineas[0][0],lineas[0][1],lineas[0][2]);
                 contador = 0;
                 cont_lines++;
                 
             
             free(linea);
-            printf("Dato c : %d \n ", c);
+            //printf("Dato c : %d \n ", c);
             }//termina el for
         }//termina el if
 
-        printf("esto es contador %d\n",cont_lines);
-        for(int i=0;i<cont_lines-1;i++){
+        
+        for(int i=0;i<cont_lines;i++){            
             for(int j = 0; j<cont_lines;j++){
-                fgets(line2,256,songs);
-                printf("%s line2\n \n ---------\n", line2);
-                int contador_song=0;
+                fgets(line2,256,songs); //Gets avanza de linea y deja el sapo para comparar el token
+                
+                
                 char* token2 = strtok(line2,";");
-                printf("datos[i] %s == token2 %s\n",datos[i].id,token2);
-                if(strcmp(datos[i].id,token2)==0){
-                    printf("soy token2 %s\n",token2);
-                    printf("hola");
+                //printf("datos[i] %s == token2 %s\n",datos[i].id,token2);
+
+                int boolean=string_compare(datos[i].id,token2); //comparo strings letra por letra
+                //printf("%d Bool\n", boolean);
+                
+                if(boolean==0){
+                    int contador_song=0;
                     while(token2 != NULL){
-                        printf("chao");
                         
                         char* palabra2= malloc(100*sizeof(char));
                         strcpy(palabra2,token2);
                         //strcpy(linea[contador],palabra);
-                        printf("soy palabra 2 %s\n",palabra2);
+
                         if(contador_song==1){
                             datos[j].popu=atoi(palabra2);
                             
@@ -148,13 +171,16 @@ int main(int argc, char** argv){
                             }
                         
                         token2 = strtok(NULL,";");
+                        //printf("\n contador_song %d \n +++++++++ \n", contador_song);
                         contador_song++;
                         }
+                    break;
                 }
+                
 
             }
             
-            
+            rewind(songs); //Reinicio 
         }
         
         
