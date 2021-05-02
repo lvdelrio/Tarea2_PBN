@@ -39,7 +39,7 @@ int run_archivo(FILE*file){
 
 
 
-int main(){
+int main(int argc, char** argv){
     FILE*genres;
     FILE*songs;
     genres=fopen("genres.txt","r");
@@ -70,7 +70,7 @@ int main(){
         
         if(decision==1){
             
-            for(int c=0; c<10; c++){ //Tratar de recorrer 10 nombres
+            for(int c=0; c<300; c++){ //Tratar de recorrer 10 nombres
                 char** linea = malloc(3*sizeof(char*));
                 for (int i=0;i<5;i++){
                     linea[i]=malloc(100*sizeof(char));
@@ -127,17 +127,31 @@ int main(){
             printf("Dato c : %d \n ", c);
             }//termina el for
         }//termina el if
+
+        /*
         printf("esto es contador %d",cont_lines);
         for(int i=0;i<cont_lines-1;i++){
-            printf("\n");
+            printf("FOR ---------\n");
             printf("%s ",datos[i].genero);
             printf("%s ",datos[i].id);
             printf("%s ",datos[i].artista);
             printf("%d ",datos[i].popu);
-            printf("%s \n",datos[i].major);
-            
+            printf("%s \n",datos[i].major);  
         }
-        printf("hola bune señior");
+        */
+    //Modos
+    int cantidad_genero = 0;
+    if(strcmp(argv[1], "-g") == 0){
+            printf("hola\n");
+            for(int i=0;i<cont_lines-1;i++){
+                if(strcmp(argv[2], datos[i].genero) == 0){
+                    printf("Genero select : %s \n",datos[i].genero);
+                    cantidad_genero ++;
+                }
+            
+            }
+            printf("%d Cantidad del genero \n", cantidad_genero);
+        }
         
     }//termina el while
     free(lineas[0]);
