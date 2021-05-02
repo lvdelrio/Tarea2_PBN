@@ -27,18 +27,8 @@ int numero_lineas(FILE*file){ //Contador de Lineas del archivo
     rewind(file); //Reicinio el Puntero de fgets para usearlo otra vez
     return lineas;
 }
-int run_archivo(FILE*file){
-    return 0;
-}
 
-
-
-
-
-
-
-
-
+//Main
 int main(int argc, char** argv){
     FILE*genres;
     FILE*songs;
@@ -76,8 +66,8 @@ int main(int argc, char** argv){
                     linea[i]=malloc(100*sizeof(char));
                     } 
                  
-                fgets(line,256,genres);
-                fgets(line2,256,songs);
+                fgets(line,256,genres); //generos.txt
+                fgets(line2,256,songs); //sonogs.txt
 
                 printf("DATO : %s",line);
                 
@@ -97,18 +87,23 @@ int main(int argc, char** argv){
                         }
                     if(contador==1){
                         datos[c].id=linea[contador];
-                        datos[c].popu=atoi(palabra2);
+                        datos[c].popu=atoi(palabra2); //Estos hay que sacar
                         }
                     if(contador==2){
                         datos[c].artista=linea[contador];
-                        datos[c].major=palabra2;
+                        datos[c].major=palabra2; //Estos hay que sacar
                         }
                     printf("%s",linea[0]);
                     token = strtok(NULL,";");
                     contador++;
                     
                     
-                }//termina el while
+                }//termina el while de geners
+                //Aqui comparar IDS
+
+
+
+
                 datos = realloc(datos,(c+2)*(sizeof(struct generos)));
                 
                 if(cont_lines>=1){
