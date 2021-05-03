@@ -22,7 +22,7 @@ int string_compare(char str1[], char str2[])
     //printf("%s final de linea \n",str2);
     while(str1[ctr]==str2[ctr])
     {   
-        //printf(" letras %c    %c\n",str1[ctr],str2[ctr]);
+        printf(" letras %c    %c\n",str1[ctr],str2[ctr]);
         if(str1[ctr]=='\0'||str2[ctr]=='\0')
             break;
         ctr++;
@@ -81,7 +81,7 @@ int main(int argc, char** argv){
         
         if(decision==1){
             
-            for(int c=0; c<numerodedatos; c++){ //Tratar de recorrer 10 nombres
+            for(int c=0; c<10; c++){ //Tratar de recorrer 10 nombres
                 char** linea = malloc(3*sizeof(char*));
                 char** linea2 = malloc(3*sizeof(char*));
                 for (int i=0;i<5;i++){ //Generos
@@ -93,10 +93,10 @@ int main(int argc, char** argv){
                  
                 fgets(line,256,genres); //generos.txt ---------------------------------------------
 
-                //printf("DATO : %s \n",line);
+                printf("DATO : %s \n",line);
                 
                 char* token = strtok(line, ";");
-                //printf("token %s\n", token);
+                printf("token %s\n", token);
 
                 while(token !=NULL){ //Palabra 1
                     char* palabra= malloc(100*sizeof(char));
@@ -148,7 +148,7 @@ int main(int argc, char** argv){
                 
                 
                 char* token2 = strtok(line2,";");
-                //printf("datos[i] %s == token2 %s\n",datos[i].id,token2);
+                printf("datos[i] %s == token2 %s\n",datos[i].id,token2);
 
                 int boolean=string_compare(datos[i].id,token2); //comparo strings letra por letra
                 //printf("%d Bool\n", boolean);
@@ -162,11 +162,11 @@ int main(int argc, char** argv){
                         //strcpy(linea[contador],palabra);
 
                         if(contador_song==1){
-                            datos[j].popu=atoi(palabra2);
+                            datos[i].popu=atoi(palabra2);
                             
                             }
                         if(contador_song==2){
-                            datos[j].major=palabra2;
+                            datos[i].major=palabra2;
                             
                             }
                         
