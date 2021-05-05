@@ -67,8 +67,8 @@ int main(int argc, char** argv){
     struct generos* datos = malloc(sizeof(struct generos));
 
 
-    int numerodedatos = numero_lineas(genres); //Cuento lineas
-    //int numerodedatos = 500;
+    //int numerodedatos = numero_lineas(genres); //Cuento lineas
+    int numerodedatos = 500;
     printf("%d Datos\n", numerodedatos);
 
     
@@ -337,7 +337,7 @@ else if(strcmp(argv[1], "-p") == 0){
             line[strcspn(line, "\n")] = 0;
             
             char* token = strtok(line,";");
-            char* token1;
+            char* token1 = malloc(20*sizeof(char));
             strcpy(token1,token);
             token = strtok(NULL,";");
             
@@ -464,7 +464,7 @@ else if(strcmp(argv[1], "-p") == 0){
         }
     
         
-    }//Fin for de Promedio de artistas
+    }//Fin for 
     
     //Corredor de artistas vvv
     /*
