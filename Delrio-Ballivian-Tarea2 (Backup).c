@@ -22,7 +22,7 @@ int string_compare(char str1[], char str2[])
     //printf("%s final de linea \n",str2);
     while(str1[ctr]==str2[ctr])
     {   
-        //printf(" letras %c    %c\n",str1[ctr],str2[ctr]);
+        printf(" letras %c    %c\n",str1[ctr],str2[ctr]);
         if(str1[ctr]=='\0'||str2[ctr]=='\0')
             break;
         ctr++;
@@ -72,85 +72,83 @@ int main(int argc, char** argv){
     char*** lineas = malloc(sizeof(char**));
     lineas[0]=malloc(3*sizeof(char*));
     int cont_lines = 0;
-//------------Selector de modo-------------- //No me deja sacar las variables char de aqui wtf?
-    if(strcmp(argv[1], "-p") == 0){          //Lo tengo que comparar con argv
-        char* exe_mode = argv[1];
-        char* p_mode = argv[2];
-    }
-    else if(strcmp(argv[1], "-g") == 0){
-        char* exe_mode = argv[1];
-        char* g_mode = argv[2];
-    }
 //------------inicio de programa------------
+    int decision=1;
+    while(decision){
 
-    //Hago el modo "-g"
-    int contador_genero = 0;
-    for(int c=0; c<numerodedatos; c++){ //Tratar de recorrer 10 nombres
+        printf("ingrese un numero (1) o (0)");
+        scanf("%d",&decision);
         
-        fgets(line,256,genres); //generos.txt ---------------------------------------------
+        if(decision==1){
+            
+            for(int c=0; c<10; c++){ //Tratar de recorrer 10 nombres
+                char** linea = malloc(3*sizeof(char*));
+                char** linea2 = malloc(3*sizeof(char*));
+                for (int i=0;i<5;i++){ //Generos
+                    linea[i]=malloc(100*sizeof(char));
+                    } 
+                for (int i=0;i<3;i++){//Songs
+                    linea2[i]=malloc(100*sizeof(char));
+                    } 
+                 
+                fgets(line,256,genres); //generos.txt ---------------------------------------------
 
-        line[strcspn(line, "\n")] = 0;
+                printf("DATO : %s \n",line);
+                
+                char* token = strtok(line, ";");
+                printf("token %s\n", token);
 
-        //printf("DATO : %s \n",line);
-        
-        char* token = strtok(line, ";");
+                while(token !=NULL){ //Palabra 1
+                    char* palabra= malloc(100*sizeof(char));
+                    strcpy(palabra,token);
 
-        
-        //printf("token %s\n", token);
-        if(strcmp(token, argv[2]) == 0){
-            //printf("El token eligio %s\n", argv[2]);
-
-            while(token !=NULL){ //Palabra 1
-                char* palabra= malloc(100*sizeof(char));
-                strcpy(palabra,token);
-
-
-                if(contador==0){
-                    datos[contador_genero].genero=palabra;
+                    linea[contador]=palabra;
+                    if(contador==0){
+                        datos[c].genero=linea[contador];
+                        
+                        }
+                    if(contador==1){
+                        datos[c].id=linea[contador];
+                        }
+                    if(contador==2){
+                        datos[c].artista=linea[contador];
+                        }
+                    //printf("%s Print en Palabra 1",linea[0]);
+                    token = strtok(NULL,";");
+                    contador++;
                     
-                    }
-                if(contador==1){
-                    datos[contador_genero].id=palabra;
-                    }
-                if(contador==2){
-                    datos[contador_genero].artista=palabra;
-                    }
+                    
+                }//termina el while de geners
+                //Aqui comparar IDS
+                
 
-                token = strtok(NULL,";");
-                contador++;
+                datos = realloc(datos,(c+2)*(sizeof(struct generos)));
                 
+                if(cont_lines>=1){
+                    int aux_count=cont_lines+1;
+                    char*** aux_lineas = realloc(lineas,aux_count*sizeof(char**));
+                    lineas=aux_lineas;
+                    lineas[cont_lines]=malloc(3*sizeof(char*));
+                    }
+                lineas[cont_lines]=linea;
+                //printf("%s %s %s",lineas[0][0],lineas[0][1],lineas[0][2]);
+                contador = 0;
+                cont_lines++;
                 
-                
-            }//termina el while de geners
-            //printf("%ld tamano de datos \n", sizeof(datos));
-            datos = realloc(datos,(contador_genero+2)*(sizeof(struct generos)));
-
-            contador_genero ++;
-            cont_lines++;
-        }//If modo -g
-        else{
-            continue;
-        }
-        //printf("GEN %s \n",datos[contador_genero].genero);
-        //printf("ID  %s \n",datos[contador_genero].id);
-        //printf("ART %s \n",datos[contador_genero].artista);
-        contador = 0;
+            
+            free(linea);
+            //printf("Dato c : %d \n ", c);
+            }//termina el for
+        }//termina el if
 
         
-        
-
-
-        //printf("%d cont lines \n", cont_lines);
-    
-    }//termina el for 1
-        for(int i=0;i<cont_lines-1;i++){ //Archivo songs
-            for(int j = 0; j<numerodedatos;j++){
-                fgets(line2,256,songs); 
-
-                line2[strcspn(line2, "\n")] = 0;
+        for(int i=0;i<cont_lines;i++){            
+            for(int j = 0; j<cont_lines;j++){
+                fgets(line2,256,songs); //Gets avanza de linea y deja el sapo para comparar el token
+                
                 
                 char* token2 = strtok(line2,";");
-                //printf("datos[i] %s == token2 %s\n",datos[i].id,token2);
+                printf("datos[i] %s == token2 %s\n",datos[i].id,token2);
 
                 int boolean=string_compare(datos[i].id,token2); //comparo strings letra por letra
                 //printf("%d Bool\n", boolean);
@@ -158,10 +156,10 @@ int main(int argc, char** argv){
                 if(boolean==0){
                     int contador_song=0;
                     while(token2 != NULL){
-
+                        
                         char* palabra2= malloc(100*sizeof(char));
                         strcpy(palabra2,token2);
-
+                        //strcpy(linea[contador],palabra);
 
                         if(contador_song==1){
                             datos[i].popu=atoi(palabra2);
@@ -183,9 +181,9 @@ int main(int argc, char** argv){
             }
             
             rewind(songs); //Reinicio 
-        }//fin For
+        }
         
-        /*
+        
         printf("esto es contador %d\n",cont_lines);
         for(int i=0;i<cont_lines-1;i++){
             printf("FOR ---------\n");
@@ -194,18 +192,27 @@ int main(int argc, char** argv){
             printf("ART %s \n",datos[i].artista);
             printf("POP %d \n",datos[i].popu);
             printf("MAJ %s \n",datos[i].major);  
-            
         }
-        */
-        printf("%d cont_lines \n", cont_lines);
         
-        
-    
-    //Modos
-    int cantidad_major = 0;
-    int cantidad_genero = 0;
 
-    //free(lineas[0]); Esto me tira core dumped
+
+
+    //Modos
+    int cantidad_genero = 0;
+    if(strcmp(argv[1], "-g") == 0){
+
+            for(int i=0;i<cont_lines-1;i++){
+                if(strcmp(argv[2], datos[i].genero) == 0){
+                    //printf("Genero select : %s \n",datos[i].genero);
+                    cantidad_genero ++;
+                }
+            
+            }
+            printf("%d Cantidad del genero \n", cantidad_genero);
+        }
+        
+    }//termina el while
+    free(lineas[0]);
     free(lineas);
     free(line);
     return 0;

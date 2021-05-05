@@ -1,7 +1,7 @@
 0Gc6TVm52BwZD07Ki6tIvf;0;Major
-0IuslXpMROHdEPvSl1fTQK;4;Major
+0IuslXpMROHdEPvSl1fTQK;4;Minor
 0Mf1jKa8eNAf1a4PwTbizj;0;Major
-0PbIF9YVD505GutwotpB5C;15;Major
+0PbIF9YVD505GutwotpB5C;15;Minor
 0ST6uPfvaPpJLtQwhE6KfC;0;Major
 0VSqZ3KStsjcfERGdcWpFO;10;Major
 0XKgegoxLcIihK3Klpfo3N;0;Minor
