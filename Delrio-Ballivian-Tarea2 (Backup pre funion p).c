@@ -68,7 +68,7 @@ int main(int argc, char** argv){
 
 
     int numerodedatos = numero_lineas(genres); //Cuento lineas
-    //int numerodedatos = 500;
+    //int numerodedatos = 6;
     printf("%d Datos\n", numerodedatos);
 
     
@@ -81,19 +81,13 @@ int main(int argc, char** argv){
     char*** lineas = malloc(sizeof(char**));
     lineas[0]=malloc(3*sizeof(char*));
     int cont_lines = 0;
-
-
-
-
-
-
 //------------inicio de programa------------
-//------------Modo -p ----------------------
-if(strcmp(argv[1], "-g") == 0){ //=======================================================================================
+
+    //Hago el modo "-g"
     int contador_genero = 0;
     for(int c=0; c<numerodedatos; c++){ //Tratar de recorrer 10 nombres
         
-        fgets(line,256,genres); //generos.txt 
+        fgets(line,256,genres); //generos.txt ---------------------------------------------
 
         line[strcspn(line, "\n")] = 0;
 
@@ -180,6 +174,19 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
             
             rewind(songs); //Reinicio 
         }//fin For
+        
+        /* //Confirmador de datos
+        printf("esto es contador %d\n",cont_lines);
+        for(int i=0;i<cont_lines-1;i++){
+            printf("FOR ---------\n");
+            printf("GEN %s \n",datos[i].genero);
+            printf("ID  %s \n",datos[i].id);
+            printf("ART %s \n",datos[i].artista);
+            printf("POP %d \n",datos[i].popu);
+            printf("MAJ %s \n",datos[i].major);  
+            
+        }
+        */
 
     //Condicion 
     int min_pupo = atoi(argv[3]);
@@ -269,224 +276,6 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
     free(lineas);
     free(line);
     free(datos);
-
-}//Fin del modo -g
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//------------inicio de programa------------
-//------------Modo -p ----------------------
-else if(strcmp(argv[1], "-p") == 0){
-    int contador_song = 0;
-    for(int c=0; c<numerodedatos; c++){ //Tratar de recorrer 10 nombres
-        
-        fgets(line2,256,songs); //songs.txt ---------------------------------------------
-
-        line2[strcspn(line2, "\n")] = 0;
-
-        //printf("DATO : %s \n",line);
-        
-        char* token2 = strtok(line2, ";");
-
-        
-        //printf("token %s\n", token2);
-        
-            //printf("El token eligio %s\n", argv[2]);
-
-            while(token2 !=NULL){ //Palabra 1
-                char* palabra= malloc(100*sizeof(char));
-                strcpy(palabra,token2);
-
-
-                if(contador==0){
-                    datos[contador_song].id=palabra;
-                }
-                if(contador==1){
-                    datos[contador_song].popu=atoi(palabra);
-                }
-                if(contador==2){
-                    if(strcmp(token2, argv[2]) == 0){ //Comprobar minor o major (Solo avanzo si cumple condicion)
-                        datos[contador_song].major=palabra; //o si no reemplazo
-                        datos = realloc(datos,(contador_song+2)*(sizeof(struct generos)));
-                        contador_song ++;
-                        cont_lines++;
-                    }
-                }
-
-                token2 = strtok(NULL,";");
-                contador++;
-                
-                
-                
-            }//termina el while de geners
-
-        contador = 0;
-
-    
-    }//termina el for 1
-    int contador_genres = 0;
-    for(int i=0;i<cont_lines;i++){ //Archivo genres
-        for(int j = 0; j<numerodedatos;j++){
-            fgets(line,256,genres); 
-
-            line[strcspn(line, "\n")] = 0;
-            
-            char* token = strtok(line,";");
-            char* token1;
-            strcpy(token1,token);
-            token = strtok(NULL,";");
-            
-            int boolean = 0;
-            //printf("datos[i] %s == token %s\n",datos[i].id,token);
-            boolean = string_compare(datos[i].id,token); //comparo strings letra por letra
-            //printf("%d Bool 1\n", boolean);
-            
-            
-            if(boolean==0){
-                int contador_genero=0;
-                while(token != NULL){
-
-                    char* palabra2= malloc(100*sizeof(char));
-                    strcpy(palabra2,token);
-
-                    if(contador_genero==0){
-                        datos[i].genero=token1;
-                        
-                        }
-
-                    if(contador_genero==1){
-                        datos[i].id=palabra2;
-                        
-                        }
-                    if(contador_genero==2){
-                        datos[i].artista=palabra2;
-                        
-                        }
-                    
-                    token = strtok(NULL,";");
-                    //printf("\n contador_song %d \n +++++++++ \n", contador_song);
-                    contador_genero++;
-                    }
-                break;
-            }
-            
-        }
-        
-        rewind(genres); //Reinicio 
-
-    }//fin For
-        /*
-         //Confirmador de datos
-        printf("esto es contador %d\n",cont_lines);
-        for(int i=0;i<cont_lines;i++){
-            printf("FOR ---------\n");
-            printf("GEN %s \n",datos[i].genero);
-            printf("ID  %s \n",datos[i].id);
-            printf("ART %s \n",datos[i].artista);
-            printf("POP %d \n",datos[i].popu);
-            printf("MAJ %s \n",datos[i].major);  
-            
-        }
-        */
-    
-    //Condicion 
-    char* minmaj = argv[2];
-
-    int cuenta_generos = 0;
-    
-    //char** artistas = malloc(1*sizeof(char*));
-    char** losgeneros = malloc(1*sizeof(char*));
-
-
-    int contador_generos= 0;
-    for(int i=0;i<cont_lines-1;i++){
-        
-        char* genero = malloc(100*sizeof(char)); //genero actual
-        
-        strcpy(genero, datos[i].genero);
-        
-        //float popu_suma = 0;
-        //float promedio = 0;
-        
-        int cuenta_generos = 0;
-        int flag1 = 1;
-        //Compruebo si el genero ya fue calculado (flag = 0 ya esta, flag = 1 no esta)
-        for(int k=0;k<contador_generos;k++){
-            if(strcmp(losgeneros[k], genero) == 0){
-                flag1 = 0;
-            }
-        }
-        if(flag1 == 1){
-            //cuento tot que aparece el genero
-            for(int j=0;j<cont_lines-1;j++){ 
-                if(strcmp(genero, datos[j].genero) == 0){
-                    cuenta_generos++;
-                }
-            } 
-
-
-            //Aplico condicion del argv e imprimo
-
-            printf("%s : %d \n", datos[i].genero, cuenta_generos);
-            free(genero);
-        }
-                
-        //Almaceno los generos en puntero para comparar si ya estan
-        int flag2 = 0; //Flag2 ve si genero ya fue almacenado o no
-        //printf("%s \n", datos[i].genero);
-        for(int k=0;k<contador_generos;k++){
-            
-            if(losgeneros[k] != NULL){
-                
-                if(strcmp(losgeneros[k], datos[i].genero) == 0){
-                    flag2 = 1;
-                    break;
-                }
-                else{
-                    continue;
-                }
-            }
-        }
-        if(contador_generos == 0){
-            contador_generos ++;
-        }
-        else if(contador_generos != 0 && flag2 == 0){
-            contador_generos ++;
-            losgeneros = realloc(losgeneros, (contador_generos)*(sizeof(char*)));
-        }
-        if(flag2 == 0){
-            losgeneros[contador_generos-1] = datos[i].genero;
-        }
-    
-        
-    }//Fin for de Promedio de artistas
-    
-    //Corredor de artistas vvv
-    /*
-    for(int k=0;k<contador_generos;k++){
-        printf("%s generos \n", losgeneros[k]);
-    }
-    */
-    
-    
-
-    free(losgeneros);
-    free(lineas);
-    free(line);
-    free(datos);
-    //Stats
-    tiempo = clock() - tiempo;
-    printf("%lf Tiempo \n", tiempo/CLOCKS_PER_SEC);
-    printf("%lf KB Memoria\n", memoria());
-
-    return 0;
-}//Fin del modo -p
-
     //Stats
     tiempo = clock() - tiempo;
     printf("%lf Tiempo \n", tiempo/CLOCKS_PER_SEC);
