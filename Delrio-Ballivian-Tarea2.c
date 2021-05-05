@@ -67,8 +67,8 @@ int main(int argc, char** argv){
     struct generos* datos = malloc(sizeof(struct generos));
 
 
-    //int numerodedatos = numero_lineas(genres); //Cuento lineas
-    int numerodedatos = 500;
+    int numerodedatos = numero_lineas(genres); //Cuento lineas
+    //int numerodedatos = 1500;
     printf("%d Datos\n", numerodedatos);
 
     
@@ -170,7 +170,6 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
                             }
                         
                         token2 = strtok(NULL,";");
-                        //printf("\n contador_song %d \n +++++++++ \n", contador_song);
                         contador_song++;
                         }
                     break;
@@ -178,13 +177,12 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
                 
             }
             
-            rewind(songs); //Reinicio 
+            rewind(songs); //Reinicio gets
         }//fin For
 
     //Condicion 
     int min_pupo = atoi(argv[3]);
 
-    //printf("%d cont_lines \n", cont_lines);
     int cuenta_artistas = 0;
 
     char** artistas = malloc(1*sizeof(char*));
@@ -374,6 +372,7 @@ else if(strcmp(argv[1], "-p") == 0){
                     }
                 break;
             }
+            free(token1);
             
         }
         
@@ -479,12 +478,6 @@ else if(strcmp(argv[1], "-p") == 0){
     free(lineas);
     free(line);
     free(datos);
-    //Stats
-    tiempo = clock() - tiempo;
-    printf("%lf Tiempo \n", tiempo/CLOCKS_PER_SEC);
-    printf("%lf KB Memoria\n", memoria());
-
-    return 0;
 }//Fin del modo -p
 
     //Stats
