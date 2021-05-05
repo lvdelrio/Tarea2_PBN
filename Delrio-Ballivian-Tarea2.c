@@ -60,6 +60,7 @@ int main(int argc, char** argv){
 
 
     int numerodedatos = numero_lineas(genres); //Cuento lineas
+    //int numerodedatos = 6;
     printf("%d Datos\n", numerodedatos);
 
     
@@ -107,7 +108,6 @@ int main(int argc, char** argv){
 
                 if(contador==0){
                     datos[contador_genero].genero=palabra;
-                    
                     }
                 if(contador==1){
                     datos[contador_genero].id=palabra;
@@ -131,18 +131,11 @@ int main(int argc, char** argv){
         else{
             continue;
         }
-        //printf("GEN %s \n",datos[contador_genero].genero);
-        //printf("ID  %s \n",datos[contador_genero].id);
-        //printf("ART %s \n",datos[contador_genero].artista);
         contador = 0;
 
-        
-        
-
-
-        //printf("%d cont lines \n", cont_lines);
     
     }//termina el for 1
+
         for(int i=0;i<cont_lines-1;i++){ //Archivo songs
             for(int j = 0; j<numerodedatos;j++){
                 fgets(line2,256,songs); 
@@ -179,13 +172,12 @@ int main(int argc, char** argv){
                     break;
                 }
                 
-
             }
             
             rewind(songs); //Reinicio 
         }//fin For
         
-        /*
+        /* //Confirmador de datos
         printf("esto es contador %d\n",cont_lines);
         for(int i=0;i<cont_lines-1;i++){
             printf("FOR ---------\n");
@@ -197,13 +189,66 @@ int main(int argc, char** argv){
             
         }
         */
-        printf("%d cont_lines \n", cont_lines);
+    //promedio de popularidad
+
+    //Condicion 
+    int min_pupo = atoi(argv[3]);
+
+
+
+    printf("%d cont_lines \n", cont_lines);
+    int cuenta_artistas = 0;
+
+    char** artistas = malloc(1*sizeof(char*));
+
+    float popu_suma = 0;
+    float promedio = 0;
+
+    int contador_artistas = 0;
+    for(int i=0;i<cont_lines-1;i++){
+
+
+        char* artista = malloc(100*sizeof(char)); //Artista actual
+        strcpy(artista, datos[i].artista);
+
+        
+
+        float popu_suma = 0;
+        float promedio = 0;
+        
+        int cuenta_artistas = 0;
+
+        for(int j=0;j<cont_lines-1;j++){ //cuento tot que aparece el artista
+            if(strcmp(artista, datos[j].artista) == 0){
+                popu_suma += datos[j].popu;
+                cuenta_artistas++;
+            }
+        }
+        artistas[contador_artistas] = datos[i].artista;
+        
+        //printf("%d Cuento al artista %s \n", cuenta_artistas, artista);
+        promedio = popu_suma/cuenta_artistas;
+
+        //printf("promedio del %s es == %f \n", datos[i].artista, promedio);
         
         
-    
-    //Modos
-    int cantidad_major = 0;
-    int cantidad_genero = 0;
+        /*
+        contador_artistas += 1;
+        printf("%d contador artistas \n",contador_artistas);
+        artistas = realloc(artistas, (contador_artistas+2)*(sizeof(char*)));
+        for(int k=0;k<sizeof(artistas);k++){
+            printf("%s artistas \n", artistas[k]);
+        }
+        */
+
+        //Aplico condicion
+        if(promedio >= min_pupo){
+            printf("%s : %f \n", datos[i].artista, promedio);
+        }
+
+        free(artista);
+    }
+    free(artistas);
 
     //free(lineas[0]); Esto me tira core dumped
     free(lineas);
