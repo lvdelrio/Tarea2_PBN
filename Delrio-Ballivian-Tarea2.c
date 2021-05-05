@@ -3,7 +3,13 @@
 #include <stdlib.h>
 
 #include <time.h> 
+#include <sys/resource.h>
 
+double memoria(){
+    struct  rusage r;
+    getrusage(RUSAGE_SELF, &r);
+    return(double)r.ru_maxrss;
+}
 
 struct generos{
     char* genero; 
@@ -225,7 +231,7 @@ int main(int argc, char** argv){
             } 
             //Calculo de promedio
             promedio = popu_suma/cuenta_artistas;
-            //Aplico condicion del argv
+            //Aplico condicion del argv e imprimo
             if(promedio >= min_pupo){
                 printf("%s : %f \n", datos[i].artista, promedio);
             }
@@ -273,7 +279,10 @@ int main(int argc, char** argv){
     free(lineas);
     free(line);
     free(datos);
+    //Stats
     tiempo = clock() - tiempo;
     printf("%lf Tiempo \n", tiempo/CLOCKS_PER_SEC);
+    printf("%lf KB Memoria\n", memoria());
+
     return 0;
 }
