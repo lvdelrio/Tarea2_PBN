@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <time.h> 
+
 
 struct generos{
     char* genero; 
@@ -51,6 +53,9 @@ int numero_lineas(FILE*file){ //Contador de Lineas del archivo
 
 //Main
 int main(int argc, char** argv){
+
+    double tiempo = clock();
+
     FILE*genres;
     FILE*songs;
     genres=fopen("genres.txt","r");
@@ -73,15 +78,6 @@ int main(int argc, char** argv){
     char*** lineas = malloc(sizeof(char**));
     lineas[0]=malloc(3*sizeof(char*));
     int cont_lines = 0;
-//------------Selector de modo-------------- //No me deja sacar las variables char de aqui wtf?
-    if(strcmp(argv[1], "-p") == 0){          //Lo tengo que comparar con argv
-        char* exe_mode = argv[1];
-        char* p_mode = argv[2];
-    }
-    else if(strcmp(argv[1], "-g") == 0){
-        char* exe_mode = argv[1];
-        char* g_mode = argv[2];
-    }
 //------------inicio de programa------------
 
     //Hago el modo "-g"
@@ -122,7 +118,6 @@ int main(int argc, char** argv){
                 
                 
             }//termina el while de geners
-            //printf("%ld tamano de datos \n", sizeof(datos));
             datos = realloc(datos,(contador_genero+2)*(sizeof(struct generos)));
 
             contador_genero ++;
@@ -189,14 +184,11 @@ int main(int argc, char** argv){
             
         }
         */
-    //promedio de popularidad
 
     //Condicion 
     int min_pupo = atoi(argv[3]);
 
-
-
-    printf("%d cont_lines \n", cont_lines);
+    //printf("%d cont_lines \n", cont_lines);
     int cuenta_artistas = 0;
 
     char** artistas = malloc(1*sizeof(char*));
@@ -212,46 +204,76 @@ int main(int argc, char** argv){
         strcpy(artista, datos[i].artista);
 
         
-
         float popu_suma = 0;
         float promedio = 0;
         
         int cuenta_artistas = 0;
-
-        for(int j=0;j<cont_lines-1;j++){ //cuento tot que aparece el artista
-            if(strcmp(artista, datos[j].artista) == 0){
-                popu_suma += datos[j].popu;
-                cuenta_artistas++;
+        int flag1 = 1;
+        //Compruebo si el artista ya fue calculado (flag = 0 ya esta, flag = 1 no esta)
+        for(int k=0;k<contador_artistas;k++){
+            if(strcmp(artistas[k], artista) == 0){
+                flag1 = 0;
             }
         }
-        artistas[contador_artistas] = datos[i].artista;
-        
-        //printf("%d Cuento al artista %s \n", cuenta_artistas, artista);
-        promedio = popu_suma/cuenta_artistas;
-
-        //printf("promedio del %s es == %f \n", datos[i].artista, promedio);
-        
-        
-        /*
-        contador_artistas += 1;
-        printf("%d contador artistas \n",contador_artistas);
-        artistas = realloc(artistas, (contador_artistas+2)*(sizeof(char*)));
-        for(int k=0;k<sizeof(artistas);k++){
-            printf("%s artistas \n", artistas[k]);
+        if(flag1 == 1){
+            //cuento tot que aparece el artista
+            for(int j=0;j<cont_lines-1;j++){ 
+                if(strcmp(artista, datos[j].artista) == 0){
+                    popu_suma += datos[j].popu;
+                    cuenta_artistas++;
+                }
+            } 
+            //Calculo de promedio
+            promedio = popu_suma/cuenta_artistas;
+            //Aplico condicion del argv
+            if(promedio >= min_pupo){
+                printf("%s : %f \n", datos[i].artista, promedio);
+            }
+            free(artista);
         }
-        */
+                
+        //Almaceno los artistas en puntero para comparar si ya estan
+        int flag2 = 0; //Flag2 ve si artista ya fue almacenado o no
 
-        //Aplico condicion
-        if(promedio >= min_pupo){
-            printf("%s : %f \n", datos[i].artista, promedio);
+        for(int k=0;k<contador_artistas;k++){
+            
+            if(artistas[k] != NULL){
+                
+                if(strcmp(artistas[k], datos[i].artista) == 0){
+                    flag2 = 1;
+                    break;
+                }
+                else{
+                    continue;
+                }
+            }
+        }
+        if(contador_artistas == 0){
+            contador_artistas += 1;
+        }
+        else if(contador_artistas != 0 && flag2 == 0){
+            contador_artistas += 1;
+            artistas = realloc(artistas, (contador_artistas)*(sizeof(char*)));
+        }
+        if(flag2 == 0){
+            artistas[contador_artistas-1] = datos[i].artista;
         }
 
-        free(artista);
+        
+    }//Fin for de Promedio de artistas
+
+    //Corredor de artistas vvv
+    /*
+    for(int k=0;k<contador_artistas;k++){
+        printf("%s Artistas \n", artistas[k]);
     }
-    free(artistas);
+    */
 
-    //free(lineas[0]); Esto me tira core dumped
+    free(artistas);
     free(lineas);
     free(line);
+    free(datos);
+    tiempo = clock() - tiempo;
+    printf("%lf Tiempo \n", tiempo/CLOCKS_PER_SEC);
     return 0;
 }
