@@ -23,8 +23,11 @@ struct generos{
 int string_compare(char str1[], char str2[])
 {
     int ctr=0;
+    //printf("estoy en la super mega funcion : %s \n", str1);
+    //printf("%s final de linea \n",str2);
     while(str1[ctr]==str2[ctr])
     {   
+        //printf(" letras %c    %c\n",str1[ctr],str2[ctr]);
         if(str1[ctr]=='\0'||str2[ctr]=='\0')
             break;
         ctr++;
@@ -53,7 +56,7 @@ int numero_lineas(FILE*file){ //Contador de Lineas del archivo
 
 //Main
 int main(int argc, char** argv){
-    
+
     double tiempo = clock();
 
     FILE*genres;
@@ -66,14 +69,14 @@ int main(int argc, char** argv){
 
     int numerodedatos = numero_lineas(genres); //Cuento lineas
     //int numerodedatos = 1500;
-    //printf("%d Datos\n", numerodedatos);
+    printf("%d Datos\n", numerodedatos);
 
     
     char* line = malloc(255*sizeof(char)); //ACUERDATE DEL FREE 
     char* line2 = malloc(255*sizeof(char)); 
 
     
-
+    //char line[255]; //Hay que declarar eso diferente por las decimas
     int contador = 0;
     char*** lineas = malloc(sizeof(char**));
     lineas[0]=malloc(3*sizeof(char*));
@@ -87,30 +90,21 @@ int main(int argc, char** argv){
 //------------inicio de programa------------
 //------------Modo -p ----------------------
 if(strcmp(argv[1], "-g") == 0){ //=======================================================================================
-    if(argc < 4){
-        printf("No se dieron suficientes argumentos\n cerrando programa \n");
-        exit(0);
-    }
-    if(atoi(argv[3]) < 0 || atoi(argv[3]) > 100){
-        printf("Popularidad Invalida \n cerrando programa \n");
-        exit(0);
-    }
     int contador_genero = 0;
-
-    printf("%s \n", argv[2]);
     for(int c=0; c<numerodedatos; c++){ //Tratar de recorrer 10 nombres
         
         fgets(line,256,genres); //generos.txt 
 
         line[strcspn(line, "\n")] = 0;
 
+        //printf("DATO : %s \n",line);
         
         char* token = strtok(line, ";");
 
         
-
+        //printf("token %s\n", token);
         if(strcmp(token, argv[2]) == 0){
-
+            //printf("El token eligio %s\n", argv[2]);
 
             while(token !=NULL){ //Palabra 1
                 char* palabra= malloc(100*sizeof(char));
@@ -130,17 +124,17 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
                 token = strtok(NULL,";");
                 contador++;
                 
-
+                
+                
             }//termina el while de geners
             datos = realloc(datos,(contador_genero+2)*(sizeof(struct generos)));
-            
+
             contador_genero ++;
             cont_lines++;
         }//If modo -g
         else{
             continue;
         }
-        
         contador = 0;
 
     
@@ -153,10 +147,10 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
                 line2[strcspn(line2, "\n")] = 0;
                 
                 char* token2 = strtok(line2,";");
-
+                //printf("datos[i] %s == token2 %s\n",datos[i].id,token2);
 
                 int boolean=string_compare(datos[i].id,token2); //comparo strings letra por letra
-
+                //printf("%d Bool\n", boolean);
                 
                 if(boolean==0){
                     int contador_song=0;
@@ -189,9 +183,12 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
     //Condicion 
     int min_pupo = atoi(argv[3]);
 
+    int cuenta_artistas = 0;
 
     char** artistas = malloc(1*sizeof(char*));
 
+    float popu_suma = 0;
+    float promedio = 0;
 
     int contador_artistas = 0;
     for(int i=0;i<cont_lines-1;i++){
@@ -224,7 +221,7 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
             promedio = popu_suma/cuenta_artistas;
             //Aplico condicion del argv e imprimo
             if(promedio >= min_pupo){
-                printf("\t %s : %.1f \n", datos[i].artista, promedio);
+                printf("%s : %.1f \n", datos[i].artista, promedio);
             }
             free(artista);
         }
@@ -259,6 +256,12 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
         
     }//Fin for de Promedio de artistas
 
+    //Corredor de artistas vvv
+    /*
+    for(int k=0;k<contador_artistas;k++){
+        printf("%s Artistas \n", artistas[k]);
+    }
+    */
 
     free(artistas);
     free(lineas);
@@ -277,10 +280,6 @@ if(strcmp(argv[1], "-g") == 0){ //==============================================
 //------------inicio de programa------------
 //------------Modo -p ----------------------
 else if(strcmp(argv[1], "-p") == 0){
-    if(argc < 3){
-        printf("No se dieron suficientes argumentos\n cerrando programa \n");
-        exit(0);
-    }
     int contador_song = 0;
     for(int c=0; c<numerodedatos; c++){ //Tratar de recorrer 10 nombres
         
@@ -288,11 +287,14 @@ else if(strcmp(argv[1], "-p") == 0){
 
         line2[strcspn(line2, "\n")] = 0;
 
-
+        //printf("DATO : %s \n",line);
         
         char* token2 = strtok(line2, ";");
 
-
+        
+        //printf("token %s\n", token2);
+        
+            //printf("El token eligio %s\n", argv[2]);
 
             while(token2 !=NULL){ //Palabra 1
                 char* palabra= malloc(100*sizeof(char));
@@ -325,7 +327,7 @@ else if(strcmp(argv[1], "-p") == 0){
 
     
     }//termina el for 1
-
+    int contador_genres = 0;
     for(int i=0;i<cont_lines;i++){ //Archivo genres
         for(int j = 0; j<numerodedatos;j++){
             fgets(line,256,genres); 
@@ -338,9 +340,10 @@ else if(strcmp(argv[1], "-p") == 0){
             token = strtok(NULL,";");
             
             int boolean = 0;
-
+            //printf("datos[i] %s == token %s\n",datos[i].id,token);
             boolean = string_compare(datos[i].id,token); //comparo strings letra por letra
-
+            //printf("%d Bool 1\n", boolean);
+            
             
             if(boolean==0){
                 int contador_genero=0;
@@ -364,7 +367,7 @@ else if(strcmp(argv[1], "-p") == 0){
                         }
                     
                     token = strtok(NULL,";");
-
+                    //printf("\n contador_song %d \n +++++++++ \n", contador_song);
                     contador_genero++;
                     }
                 break;
@@ -376,10 +379,26 @@ else if(strcmp(argv[1], "-p") == 0){
         rewind(genres); //Reinicio 
 
     }//fin For
+        /*
+         //Confirmador de datos
+        printf("esto es contador %d\n",cont_lines);
+        for(int i=0;i<cont_lines;i++){
+            printf("FOR ---------\n");
+            printf("GEN %s \n",datos[i].genero);
+            printf("ID  %s \n",datos[i].id);
+            printf("ART %s \n",datos[i].artista);
+            printf("POP %d \n",datos[i].popu);
+            printf("MAJ %s \n",datos[i].major);  
+            
+        }
+        */
     
     //Condicion 
-    
+    char* minmaj = argv[2];
 
+    int cuenta_generos = 0;
+    
+    //char** artistas = malloc(1*sizeof(char*));
     char** losgeneros = malloc(1*sizeof(char*));
 
 
@@ -390,7 +409,8 @@ else if(strcmp(argv[1], "-p") == 0){
         
         strcpy(genero, datos[i].genero);
         
-
+        //float popu_suma = 0;
+        //float promedio = 0;
         
         int cuenta_generos = 0;
         int flag1 = 1;
@@ -417,7 +437,7 @@ else if(strcmp(argv[1], "-p") == 0){
                 
         //Almaceno los generos en puntero para comparar si ya estan
         int flag2 = 0; //Flag2 ve si genero ya fue almacenado o no
-
+        //printf("%s \n", datos[i].genero);
         for(int k=0;k<contador_generos;k++){
             
             if(losgeneros[k] != NULL){
@@ -445,6 +465,13 @@ else if(strcmp(argv[1], "-p") == 0){
         
     }//Fin for 
     
+    //Corredor de artistas vvv
+    /*
+    for(int k=0;k<contador_generos;k++){
+        printf("%s generos \n", losgeneros[k]);
+    }
+    */
+    
     
 
     free(losgeneros);
@@ -455,8 +482,8 @@ else if(strcmp(argv[1], "-p") == 0){
 
     //Stats
     tiempo = clock() - tiempo;
-    //printf("%lf Tiempo \n", tiempo/CLOCKS_PER_SEC);
-    //printf("%lf KB Memoria\n", memoria());
+    printf("%lf Tiempo \n", tiempo/CLOCKS_PER_SEC);
+    printf("%lf KB Memoria\n", memoria());
 
     return 0;
 }
