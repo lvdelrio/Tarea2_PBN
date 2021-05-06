@@ -451,6 +451,9 @@ else if(strcmp(argv[1], "-p") == 0){
     free(lineas);
     free(line);
     free(datos);
+
+    fclose(genres);
+    fclose(songs);
 }//Fin del modo -p
 
     //Stats
